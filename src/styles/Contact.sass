@@ -458,11 +458,13 @@ $gutter: 90px
   border-radius: 50%
   background: currentColor
 
+// Hangs off the left of the status so it stays centered on the row whatever
+// the status text is
 .channel-enter
   position: absolute
-  right: 24px
-  bottom: 12px
-  z-index: 1
+  right: 100%
+  top: 50%
+  margin-right: 16px
   padding: 5px 11px 4px
   border-radius: 999px
   font-family: $label
@@ -472,13 +474,14 @@ $gutter: 90px
   text-transform: uppercase
   color: $ink
   background: $paper
+  white-space: nowrap
   opacity: 0
-  transform: translateX(-16px)
+  transform: translate(-16px, -50%)
   transition: opacity 0.3s $ease-out-expo, transform 0.3s $ease-out-expo
 
   .channel--active &
     opacity: 1
-    transform: none
+    transform: translateY(-50%)
 
 .contact-footer
   display: flex

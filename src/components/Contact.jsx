@@ -157,11 +157,11 @@ function Channel({
         {text}
       </span>
       <span className={`channel-status channel-status--${tone}`}>
+        <span className="channel-enter" aria-hidden="true">
+          Say hi →
+        </span>
         <span className="channel-status-dot" />
         {status}
-      </span>
-      <span className="channel-enter" aria-hidden="true">
-        Say hi →
       </span>
     </a>
   )
