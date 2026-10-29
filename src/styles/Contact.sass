@@ -1,0 +1,656 @@
+$ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1)
+$snap: cubic-bezier(0.7, 0, 0.2, 1)
+$label: 'Changa', var(--sans)
+$body: 'ABeeZee', var(--sans)
+$hand: 'Gochi Hand', cursive
+
+$code: ui-monospace, 'Cascadia Mono', Consolas, monospace
+
+$paper: #ffffff
+$panel: #f4f4f2
+$ink: #0d0d12
+$blue: #2f5bff
+$orange: #ff6b2c
+$dim: rgba(13, 13, 18, 0.46)
+$line: rgba(13, 13, 18, 0.1)
+
+$gutter: 90px
+
+.contact
+  position: relative
+  z-index: 1
+  width: 100%
+  background: transparent
+  color: $ink
+
+.contact-panel
+  position: relative
+  overflow: hidden
+  transform-origin: center top
+  will-change: transform, border-radius
+  background-color: $panel
+  background-image: radial-gradient(ellipse at 22% 55%, rgba(47, 91, 255, 0.08), transparent 45%), radial-gradient(circle, rgba(13, 13, 18, 0.12) 1.1px, transparent 1.4px)
+  background-size: 100% 100%, 26px 26px
+  box-shadow: inset 0 0 0 1px $line, 0 -30px 80px rgba(13, 13, 18, 0.08)
+
+.contact-viewport
+  position: relative
+  width: 100%
+  overflow: hidden
+
+.contact-canvas
+  position: relative
+  display: flex
+  flex-direction: column
+  width: 1913px
+  box-sizing: border-box
+  padding: 70px $gutter 44px
+  transform-origin: top left
+
+.contact-header
+  display: flex
+  justify-content: space-between
+  align-items: center
+
+.contact-eyebrow
+  display: flex
+  align-items: center
+  gap: 12px
+  margin: 0
+  font-family: $label
+  font-weight: 600
+  font-size: 16px
+  line-height: 1
+  letter-spacing: 0.1em
+  text-transform: uppercase
+  color: $blue
+
+.contact-eyebrow-dot
+  width: 9px
+  height: 9px
+  border-radius: 50%
+  background: $blue
+
+.contact-stats
+  margin: 0
+  font-family: $label
+  font-weight: 600
+  font-size: 15px
+  line-height: 1
+  letter-spacing: 0.12em
+  text-transform: uppercase
+  color: $ink
+
+  span
+    margin: 0 10px
+    color: $dim
+
+.contact-main
+  flex: 1
+  display: grid
+  grid-template-columns: 600px 1fr
+  column-gap: 100px
+  align-items: center
+
+.contact-clock
+  position: relative
+
+.contact-right
+  display: flex
+  flex-direction: column
+
+.contact-clock-body
+  position: relative
+  width: 560px
+  height: 560px
+
+.clock-wrap
+  position: relative
+  width: 100%
+  height: 100%
+
+.clock-sweep
+  position: absolute
+  inset: 12px
+  border-radius: 50%
+  background: conic-gradient(from -70deg, transparent 0deg, rgba(47, 91, 255, 0.03) 20deg, rgba(47, 91, 255, 0.16) 70deg, transparent 70deg)
+  pointer-events: none
+
+.clock
+  position: relative
+  display: block
+  width: 100%
+  height: 100%
+  overflow: visible
+
+.clock-guide
+  stroke: rgba(13, 13, 18, 0.12)
+  stroke-width: 1
+  stroke-dasharray: 3 7
+
+.clock-ring
+  fill: none
+  stroke: rgba(13, 13, 18, 0.08)
+  stroke-width: 1
+
+.clock-face
+  fill: $paper
+  stroke: rgba(13, 13, 18, 0.14)
+  stroke-width: 2
+
+.clock-orbit
+  fill: none
+  stroke: rgba(47, 91, 255, 0.6)
+  stroke-width: 1.6
+  stroke-dasharray: 6 5
+  transform-origin: 280px 280px
+  animation: clock-orbit-spin 120s linear infinite
+
+@keyframes clock-orbit-spin
+  to
+    transform: rotate(-360deg)
+
+.clock-tick
+  stroke: rgba(13, 13, 18, 0.2)
+  stroke-width: 2
+
+.clock-tick--hour
+  stroke: $ink
+  stroke-width: 3
+
+.clock-hand
+  stroke-linecap: round
+
+.clock-hand--hour
+  stroke: $ink
+  stroke-width: 8
+
+.clock-hand--minute
+  stroke: $ink
+  stroke-width: 4
+
+.clock-hand--second
+  stroke: $orange
+  stroke-width: 2
+
+.clock-second-ring
+  fill: $paper
+  stroke: $orange
+  stroke-width: 2.5
+
+.clock-second-dot
+  fill: $orange
+
+.clock-pin
+  fill: $paper
+  stroke: $blue
+  stroke-width: 3
+
+.clock-tag
+  position: absolute
+  z-index: 2
+  display: flex
+  align-items: baseline
+  gap: 5px
+  padding: 7px 12px 5px
+  border-radius: 999px
+  transform: translate(-50%, -50%)
+  white-space: nowrap
+  pointer-events: none
+
+  &--hour
+    background: $blue
+    color: $paper
+    box-shadow: 0 10px 28px rgba(47, 91, 255, 0.35)
+
+  &--minute
+    background: $paper
+    color: $ink
+    box-shadow: 0 0 0 1px rgba(13, 13, 18, 0.14), 0 10px 24px rgba(13, 13, 18, 0.08)
+
+.clock-tag-value
+  font-family: $label
+  font-weight: 600
+  font-size: 36px
+  line-height: 1
+
+.clock-tag-unit
+  font-family: $label
+  font-weight: 600
+  font-size: 11px
+  letter-spacing: 0.14em
+  text-transform: uppercase
+  opacity: 0.7
+
+.contact-clock-zone
+  position: absolute
+  left: 0
+  right: 0
+  bottom: -44px
+  font-family: $label
+  font-size: 13px
+  letter-spacing: 0.16em
+  text-align: center
+  text-transform: uppercase
+  color: $dim
+
+.contact-clock-sr
+  position: absolute
+  width: 1px
+  height: 1px
+  overflow: hidden
+  clip-path: inset(50%)
+  white-space: nowrap
+
+.contact-status
+  margin-top: 84px
+  padding: 4px 0 4px 24px
+  border-left: 2px solid rgba(13, 13, 18, 0.2)
+
+  &--go
+    border-left-color: $blue
+
+.contact-status-label
+  display: flex
+  align-items: center
+  gap: 10px
+  font-family: $label
+  font-weight: 600
+  font-size: 14px
+  letter-spacing: 0.14em
+  text-transform: uppercase
+  color: $dim
+
+  .contact-status--go &
+    color: $blue
+
+.contact-status-dot
+  width: 7px
+  height: 7px
+  border-radius: 50%
+  background: currentColor
+
+.contact-status-note
+  margin: 12px 0 0
+  max-width: 520px
+  font-family: $body
+  font-size: 19px
+  line-height: 1.5
+  color: rgba(13, 13, 18, 0.75)
+
+.contact-note
+  position: absolute
+  z-index: 3
+  pointer-events: none
+
+  &--clock
+    left: 440px
+    top: -30px
+
+  &--channels
+    position: relative
+    margin: 26px 0 0 560px
+    width: max-content
+
+.contact-note-text
+  display: block
+  font-family: $hand
+  font-size: 32px
+  line-height: 1
+  white-space: nowrap
+  color: $blue
+
+  .contact-note--clock &
+    transform: rotate(-6deg)
+
+  .contact-note--channels &
+    transform: rotate(-3deg)
+
+.contact-note-arrow
+  position: absolute
+  fill: none
+  stroke: currentColor
+  stroke-width: 2.5
+  stroke-linecap: round
+  stroke-linejoin: round
+
+  .contact-note--clock &
+    left: -10px
+    top: 32px
+    width: 90px
+    height: 90px
+    color: $blue
+
+  .contact-note--channels &
+    left: -64px
+    top: -14px
+    width: 60px
+    height: 46px
+    color: $blue
+
+.contact-heading
+  display: flex
+  flex-direction: column
+  margin: 0 0 56px
+  font-family: $label
+  font-weight: 600
+  font-size: 104px
+  line-height: 0.9
+  letter-spacing: -0.01em
+  text-transform: uppercase
+  color: $ink
+
+  .headline-line--outline
+    align-self: flex-start
+    padding-left: 48px
+    -webkit-text-stroke-width: 2px
+
+.channels-header,
+.channel
+  display: grid
+  grid-template-columns: 80px 170px 1fr 170px
+  align-items: center
+
+.channels-header
+  padding: 0 24px 16px
+  border-bottom: 1px solid $ink
+  font-family: $label
+  font-size: 12px
+  letter-spacing: 0.16em
+  text-transform: uppercase
+  color: $dim
+
+.channel
+  position: relative
+  height: 112px
+  padding: 0 24px
+  overflow: hidden
+  border-bottom: 1px solid $line
+  color: $ink
+  text-decoration: none
+  cursor: pointer
+  outline: none
+
+  &:focus-visible
+    box-shadow: inset 0 0 0 2px $blue
+
+.channel-wipe
+  position: absolute
+  inset: 0
+  z-index: 0
+  background: $ink
+  transform: scaleX(0)
+  transform-origin: left center
+  transition: transform 0.38s $snap
+
+  .channel--active &
+    transform: scaleX(1)
+
+.channel-index,
+.channel-via,
+.channel-destination,
+.channel-status
+  position: relative
+  z-index: 1
+  transition: color 0.2s linear 0.08s
+
+  .channel--active &
+    color: $paper
+
+.channel-index
+  font-family: $code
+  font-size: 16px
+  color: $dim
+
+  &::before
+    content: '#'
+    margin-right: 2px
+    opacity: 0.6
+
+.channel-via
+  display: flex
+  flex-direction: column
+  gap: 6px
+  font-family: $label
+  font-weight: 600
+  font-size: 18px
+  letter-spacing: 0.12em
+  text-transform: uppercase
+
+.channel-reply
+  font-weight: 400
+  font-size: 12px
+  letter-spacing: 0.1em
+  color: $dim
+  transition: color 0.2s linear 0.08s
+
+  .channel--active &
+    color: rgba(255, 255, 255, 0.6)
+
+.channel-destination
+  font-family: $label
+  font-weight: 600
+  font-size: 34px
+  line-height: 1
+  letter-spacing: 0.01em
+  white-space: pre
+
+.channel-status
+  display: flex
+  align-items: center
+  justify-self: end
+  gap: 10px
+  font-family: $label
+  font-weight: 600
+  font-size: 13px
+  letter-spacing: 0.14em
+  text-transform: uppercase
+
+  &--go
+    color: $blue
+
+  &--wait
+    color: $orange
+
+.channel-status-dot
+  width: 7px
+  height: 7px
+  border-radius: 50%
+  background: currentColor
+
+.channel-enter
+  position: absolute
+  right: 24px
+  bottom: 12px
+  z-index: 1
+  padding: 5px 11px 4px
+  border-radius: 999px
+  font-family: $label
+  font-weight: 600
+  font-size: 12px
+  letter-spacing: 0.14em
+  text-transform: uppercase
+  color: $ink
+  background: $paper
+  opacity: 0
+  transform: translateX(-16px)
+  transition: opacity 0.3s $ease-out-expo, transform 0.3s $ease-out-expo
+
+  .channel--active &
+    opacity: 1
+    transform: none
+
+.contact-footer
+  display: flex
+  align-items: center
+  gap: 48px
+  padding-top: 22px
+  border-top: 1px solid $line
+  font-family: $body
+  font-size: 15px
+  color: $dim
+
+.contact-footer-eof
+  margin-left: auto
+  font-family: $code
+  font-size: 14px
+  color: $ink
+
+.contact-top
+  padding: 10px 18px
+  border: 1.5px solid $ink
+  border-radius: 999px
+  background: transparent
+  font-family: $label
+  font-weight: 600
+  font-size: 13px
+  letter-spacing: 0.14em
+  text-transform: uppercase
+  color: $ink
+  cursor: pointer
+  transition: background-color 0.25s $ease-out-expo, color 0.25s $ease-out-expo
+
+  &:hover,
+  &:focus-visible
+    background: $ink
+    color: $paper
+
+// The clock is still laid out on its own 560px grid, so it's shrunk as a
+// whole with --clock-scale
+
+$phone-gutter: 20px
+
+@media (max-width: 760px)
+  .contact-canvas
+    width: 100%
+    padding: 32px $phone-gutter 28px
+
+  .contact-header
+    flex-direction: column
+    align-items: flex-start
+    gap: 10px
+
+  .contact-eyebrow
+    font-size: 13px
+
+  .contact-stats
+    font-size: 11px
+    line-height: 1.5
+
+    span
+      margin: 0 6px
+
+  .contact-main
+    grid-template-columns: minmax(0, 1fr)
+    row-gap: 56px
+    margin: 40px 0 48px
+
+  .contact-clock
+    display: flex
+    flex-direction: column
+    align-items: center
+
+  // `scale`, not `transform`: FadeIn animates this element's transform
+  .contact-clock-body
+    flex: none
+    scale: var(--clock-scale, 1)
+    transform-origin: top left
+    margin-right: calc(560px * (var(--clock-scale, 1) - 1))
+    margin-bottom: calc(560px * (var(--clock-scale, 1) - 1))
+
+  .contact-clock-zone
+    bottom: calc(-36px / var(--clock-scale, 1))
+    font-size: calc(12px / var(--clock-scale, 1))
+
+  .contact-note--clock
+    left: auto
+    right: 0
+    top: -36px
+
+    .contact-note-text
+      font-size: 22px
+
+    .contact-note-arrow
+      left: -6px
+      top: 22px
+      width: 60px
+      height: 60px
+
+  .contact-status
+    align-self: stretch
+    margin-top: 56px
+    padding-left: 16px
+
+  .contact-status-label
+    font-size: 12px
+
+  .contact-status-note
+    font-size: 16px
+
+  .contact-heading
+    margin-bottom: 28px
+    font-size: clamp(34px, 10.4vw, 56px)
+
+    .headline-line--outline
+      padding-left: 0.4em
+      -webkit-text-stroke-width: 1.5px
+
+  .channels-header
+    display: none
+
+  .channels
+    border-top: 1px solid $ink
+
+  .channel
+    grid-template-columns: 40px minmax(0, 1fr) auto
+    grid-template-areas: 'index via status' 'index destination destination'
+    align-items: center
+    row-gap: 10px
+    height: auto
+    padding: 18px 12px
+
+  .channel-index
+    grid-area: index
+    align-self: start
+    font-size: 12px
+
+  .channel-via
+    grid-area: via
+    flex-direction: row
+    align-items: baseline
+    gap: 10px
+    font-size: 14px
+
+  .channel-reply
+    font-size: 11px
+
+  .channel-destination
+    grid-area: destination
+    font-size: clamp(17px, 5vw, 24px)
+    white-space: normal
+    overflow-wrap: anywhere
+
+  .channel-status
+    grid-area: status
+    font-size: 11px
+
+  .channel-enter
+    display: none
+
+  .contact-note--channels
+    margin: 22px 0 0 64px
+
+    .contact-note-text
+      font-size: 24px
+
+  .contact-footer
+    flex-wrap: wrap
+    gap: 12px 20px
+    font-size: 12px
+
+  .contact-footer-eof
+    margin-left: 0
+
+@media (prefers-reduced-motion: reduce)
+  .clock-orbit
+    animation: none

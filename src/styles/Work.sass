@@ -1,0 +1,53 @@
+$label: 'Changa', var(--sans)
+$ink: #0d0d12
+$faint: rgba(13, 13, 18, 0.42)
+$blue: #2f5bff
+
+$gutter: clamp(20px, 4.7vw, 90px)
+
+.work-contact
+  position: relative
+  z-index: 1
+  padding: 0 $gutter clamp(64px, 7vw, 120px)
+
+.work-contact-title
+  display: flex
+  flex-wrap: wrap
+  column-gap: 0.25em
+  margin: 0 0 clamp(32px, 3.5vw, 56px)
+  font-family: $label
+  font-weight: 600
+  font-size: clamp(44px, 6vw, 112px)
+  line-height: 0.9
+  letter-spacing: -0.01em
+  text-transform: uppercase
+  color: $ink
+
+  .headline-line--outline
+    align-self: auto
+    -webkit-text-stroke-width: max(1.5px, 0.012em)
+
+.work-contact-channels
+  display: grid
+  grid-template-columns: repeat(3, minmax(0, 1fr))
+  border-top: 1px solid $ink
+
+  @media (max-width: 900px)
+    grid-template-columns: 1fr
+
+    .cs-exit + .cs-exit
+      border-left: 0
+
+.work-contact-channel
+  .cs-exit-label em
+    font-style: normal
+    color: $faint
+
+  &:hover .cs-exit-label em,
+  &:focus-visible .cs-exit-label em
+    color: inherit
+
+  .cs-exit-title
+    font-size: clamp(20px, 1.7vw, 30px)
+    overflow-wrap: anywhere
+    text-transform: none

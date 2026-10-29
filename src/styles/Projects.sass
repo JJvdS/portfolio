@@ -1,0 +1,746 @@
+$ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1)
+$snap: cubic-bezier(0.7, 0, 0.2, 1)
+$label: 'Changa', var(--sans)
+$body: 'ABeeZee', var(--sans)
+$display: 'Changa One', var(--sans)
+$code: ui-monospace, 'Cascadia Mono', Consolas, monospace
+
+$paper: #ffffff
+$ink: #0d0d12
+$blue: #2f5bff
+$orange: #ff6b2c
+$dim: rgba(13, 13, 18, 0.46)
+$accent: var(--live-accent)
+$line: color-mix(in srgb, $accent 18%, transparent)
+// The sweep band: a pale wash of the accent
+$shade: color-mix(in srgb, $accent 22%, white)
+
+$gutter: 90px
+$row-height: 176px
+$row-height-active: 336px
+$row-height-unfocused: 156px
+$row-transition: 0.6s $ease-out-expo
+
+.stage
+  position: relative
+  background: $paper
+
+// The canvas is fixed and clip-path (unlike overflow) clips fixed children.
+// Sticky won't work: #root's overflow-x makes it the scroll container
+.stage-backdrop
+  position: absolute
+  inset: 0
+  z-index: 0
+  pointer-events: none
+  clip-path: inset(0)
+
+.dot-field,
+.stage-backdrop::after
+  position: fixed
+  inset: 0
+  display: block
+  width: 100%
+  height: 100vh
+
+.stage-backdrop::after
+  content: ''
+  background: radial-gradient(ellipse at 50% 45%, transparent 0%, rgba(255, 255, 255, 0.45) 62%, $paper 100%)
+
+.showcase
+  position: relative
+  z-index: 1
+  width: 100%
+  overflow: hidden
+  color: $ink
+  isolation: isolate
+
+
+.showcase-tape
+  position: absolute
+  left: -10%
+  width: 120%
+  z-index: 4
+  overflow: hidden
+  pointer-events: none
+  font-family: $display
+  font-size: clamp(13px, 1.25vw, 24px)
+  line-height: 1
+  letter-spacing: 0.06em
+  white-space: nowrap
+  padding: 0.7em 0
+  box-shadow: 0 18px 40px rgba(13, 13, 18, 0.18)
+
+  &--ink
+    top: clamp(28px, 3.4vw, 64px)
+    background: $ink
+    color: $paper
+    transform: rotate(-2.4deg)
+
+  &--accent
+    top: clamp(40px, 4.6vw, 88px)
+    background: $blue
+    color: $paper
+    transform: rotate(1.8deg)
+
+    .showcase-tape-track
+      animation-direction: reverse
+      animation-duration: 46s
+
+.showcase-tape-track
+  display: inline-flex
+  padding: 0.5em 0 0.4em
+  animation: showcase-tape-run 38s linear infinite
+
+@keyframes showcase-tape-run
+  to
+    transform: translateX(-50%)
+
+.showcase-viewport
+  position: relative
+  z-index: 2
+  width: 100%
+  overflow: hidden
+
+.showcase-canvas
+  position: relative
+  width: 1913px
+  padding-top: 240px
+  transform-origin: top left
+
+.showcase-header
+  display: flex
+  justify-content: space-between
+  align-items: center
+  padding: 0 $gutter
+
+.showcase-eyebrow
+  display: flex
+  align-items: center
+  gap: 12px
+  margin: 0
+  font-family: $label
+  font-weight: 600
+  font-size: 16px
+  line-height: 1
+  letter-spacing: 0.1em
+  text-transform: uppercase
+  color: $blue
+
+.showcase-eyebrow-dot
+  width: 9px
+  height: 9px
+  border-radius: 50%
+  background: $blue
+
+.showcase-stats
+  margin: 0
+  font-family: $label
+  font-weight: 600
+  font-size: 15px
+  line-height: 1
+  letter-spacing: 0.12em
+  text-transform: uppercase
+  color: $ink
+
+  span
+    margin: 0 10px
+    color: $dim
+
+.showcase-intro
+  display: grid
+  grid-template-columns: 1fr 560px
+  align-items: end
+  gap: 80px
+  margin: 64px 0 0
+  padding: 0 $gutter
+
+.showcase-intro-title
+  display: flex
+  gap: 0.28em
+  margin: 0
+  font-family: $label
+  font-weight: 600
+  font-size: 128px
+  line-height: 0.9
+  text-transform: uppercase
+  color: $ink
+
+  .headline-line--outline
+    align-self: auto
+    -webkit-text-stroke-width: 2px
+
+.showcase-intro-copy
+  margin: 0
+  padding-bottom: 10px
+  font-family: $body
+  font-size: 22px
+  line-height: 1.5
+  color: rgba(13, 13, 18, 0.66)
+
+.showcase-hint
+  color: $ink
+
+.showcase-hint--touch
+  display: none
+
+@media (hover: none)
+  .showcase-hint--pointer
+    display: none
+
+  .showcase-hint--touch
+    display: inline
+
+.caret
+  display: inline-block
+  width: 0.55em
+  height: 1.05em
+  margin-left: 4px
+  vertical-align: -0.18em
+  border-radius: 2px
+  background: $blue
+  animation: caret-blink 1s steps(1) infinite
+
+@keyframes caret-blink
+  50%
+    opacity: 0
+
+.headline-line
+  display: block
+  white-space: pre
+
+  // Transforms don't apply to plain inline spans
+  .headline-letter
+    display: inline-block
+    cursor: default
+    // Own layer per letter, so the scatter never repaints the outline
+    will-change: transform
+
+  &--outline
+    position: relative
+    align-self: flex-end
+    color: transparent
+    -webkit-text-stroke: 3px $blue
+
+.showcase-columns
+  display: grid
+  grid-template-columns: 170px 1fr 360px
+  margin: 72px 0 0
+  padding: 0 $gutter 18px
+  border-bottom: 1px solid $ink
+  font-family: $label
+  font-size: 12px
+  letter-spacing: 0.16em
+  text-transform: uppercase
+  color: $dim
+
+.showcase-list
+  list-style: none
+  margin: 0
+  padding: 0
+
+.showcase-list-item
+  margin: 0
+  border-bottom: 1px solid $line
+
+  @for $i from 2 through 12
+    &:nth-child(#{$i}) .entry::after
+      animation-delay: #{($i - 1) * 0.05}s
+
+.entry
+  position: relative
+  display: grid
+  grid-template-columns: 170px 1fr 360px
+  align-items: center
+  height: $row-height
+  padding: 0 $gutter
+  overflow: hidden
+  color: $ink
+  text-decoration: none
+  cursor: pointer
+  outline: none
+  transition: height $row-transition, opacity $row-transition, filter $row-transition
+
+  // The sweep always runs on a shared timeline and hover only fades it, so
+  // rows stay in step and leaving never snaps the band back
+  &::after
+    content: ''
+    position: absolute
+    inset: 0
+    z-index: 3
+    pointer-events: none
+    opacity: 0
+    transform: translateX(-100%)
+    background-image: linear-gradient(90deg, transparent 0, color-mix(in srgb, $shade 45%, transparent) 20%, color-mix(in srgb, $shade 85%, transparent) 60%, transparent)
+    animation: entry-shimmer 2.7s infinite
+    transition: opacity $row-transition
+
+  &.entry--wip
+    cursor: default
+
+  &.entry--active
+    height: $row-height-active
+
+  .showcase-list--focused &:not(.entry--active)
+    height: $row-height-unfocused
+    opacity: 0.32
+    filter: blur(2px)
+
+    &::after
+      opacity: 1
+
+  &:focus-visible
+    box-shadow: inset 0 0 0 2px $blue
+
+@keyframes entry-shimmer
+  100%
+    transform: translateX(100%)
+
+.entry-wipe
+  position: absolute
+  inset: 0
+  z-index: 0
+  background: $ink
+  transform: scaleX(0)
+  transform-origin: left center
+  transition: transform 0.38s $snap
+
+  .entry--wip &
+    background: $orange
+
+  .entry--active &
+    transform: scaleX(1)
+
+.entry-index,
+.entry-title,
+.entry-side,
+.entry-status,
+.entry-enter
+  position: relative
+  z-index: 1
+  transition: color 0.2s linear 0.08s
+
+.entry-index
+  font-family: $code
+  font-size: 16px
+  line-height: 1
+  color: $dim
+
+  &::before
+    content: '#'
+    margin-right: 2px
+    opacity: 0.6
+
+  .entry--active &
+    color: rgba(255, 255, 255, 0.6)
+
+.entry-sr
+  position: absolute
+  width: 1px
+  height: 1px
+  overflow: hidden
+  clip-path: inset(50%)
+  white-space: nowrap
+
+.entry-title
+  font-family: $label
+  font-weight: 600
+  font-size: 84px
+  line-height: 1
+  letter-spacing: -0.01em
+  text-transform: uppercase
+  white-space: pre
+
+  .entry--active &
+    color: $paper
+    animation: entry-jolt 0.32s steps(2) 1
+
+@keyframes entry-jolt
+  0%
+    transform: translateX(-10px) skewX(-8deg)
+  50%
+    transform: translateX(6px) skewX(4deg)
+  100%
+    transform: none
+
+.entry-side
+  display: flex
+  flex-direction: column
+  align-items: flex-start
+  gap: 16px
+
+.entry-tags
+  font-family: $label
+  font-weight: 600
+  font-size: 14px
+  line-height: 1
+  letter-spacing: 0.14em
+  text-transform: uppercase
+  color: rgba(13, 13, 18, 0.78)
+
+  .entry--active &
+    color: $paper
+
+.entry-year
+  color: $dim
+
+  &::before
+    content: '—'
+    margin: 0 12px
+
+  .entry--active &
+    color: rgba(255, 255, 255, 0.6)
+
+.entry-status
+  display: flex
+  align-items: center
+  gap: 10px
+  font-family: $label
+  font-weight: 600
+  font-size: 13px
+  letter-spacing: 0.14em
+  text-transform: uppercase
+  color: $blue
+
+  .entry--wip &
+    color: $orange
+
+  .entry--active &
+    color: $paper
+
+.entry-status-dot
+  flex: none
+  width: 7px
+  height: 7px
+  border-radius: 50%
+  background: currentColor
+
+.entry-enter
+  position: absolute
+  right: $gutter
+  bottom: 22px
+  padding: 8px 14px 7px
+  border-radius: 999px
+  font-family: $label
+  font-weight: 600
+  font-size: 13px
+  letter-spacing: 0.14em
+  text-transform: uppercase
+  color: $ink
+  background: $paper
+  opacity: 0
+  transform: translateX(-16px)
+  transition: opacity 0.3s $ease-out-expo, transform 0.3s $ease-out-expo
+
+  .entry--active &
+    opacity: 1
+    transform: none
+
+.showcase-eof
+  display: flex
+  align-items: center
+  justify-content: space-between
+  gap: 40px
+  padding: 56px $gutter 140px
+
+.showcase-eof-text
+  margin: 0
+  font-family: $code
+  font-size: 15px
+  color: $dim
+
+.showcase-eof-link
+  position: relative
+  flex: none
+  overflow: hidden
+  border: 1.5px solid $ink
+  border-radius: 999px
+  text-decoration: none
+
+  &:hover .showcase-eof-link-wipe,
+  &:focus-visible .showcase-eof-link-wipe
+    transform: scaleX(1)
+
+  &:hover .showcase-eof-link-text,
+  &:focus-visible .showcase-eof-link-text
+    color: $paper
+
+  &:focus-visible
+    outline: 2px solid $blue
+    outline-offset: 4px
+
+.showcase-eof-link-wipe
+  position: absolute
+  inset: 0
+  background: $ink
+  transform: scaleX(0)
+  transform-origin: left center
+  transition: transform 0.38s $snap
+
+.showcase-eof-link-text
+  position: relative
+  display: block
+  padding: 20px 34px 18px
+  font-family: $label
+  font-weight: 600
+  font-size: 18px
+  letter-spacing: 0.16em
+  text-transform: uppercase
+  color: $ink
+  transition: color 0.2s linear 0.06s
+
+// A floating browser window that follows the cursor
+.showcase-preview
+  position: fixed
+  left: 0
+  top: 0
+  z-index: 50
+  width: 400px
+  overflow: hidden
+  pointer-events: none
+  background: $paper
+  border: 1px solid rgba(13, 13, 18, 0.12)
+  border-radius: 14px
+  box-shadow: 0 2px 6px rgba(13, 13, 18, 0.06), 0 30px 80px rgba(13, 13, 18, 0.22)
+  opacity: 0
+  clip-path: inset(0 0 100% 0 round 14px)
+  transition: opacity 0.2s linear, clip-path 0.35s $snap
+  will-change: transform
+
+  &.is-visible
+    opacity: 1
+    clip-path: inset(0 0 0 0 round 14px)
+
+  @media (pointer: coarse)
+    display: none
+
+.showcase-preview-bar
+  display: flex
+  align-items: center
+  gap: 14px
+  height: 36px
+  padding: 0 14px
+  background: #f4f4f2
+  border-bottom: 1px solid rgba(13, 13, 18, 0.08)
+
+.showcase-preview-dots
+  display: flex
+  gap: 6px
+
+  span
+    width: 10px
+    height: 10px
+    border-radius: 50%
+    background: #ff5f57
+
+    &:nth-child(2)
+      background: #febc2e
+
+    &:nth-child(3)
+      background: #28c840
+
+.showcase-preview-url
+  flex: 1
+  min-width: 0
+  overflow: hidden
+  padding: 4px 10px
+  border-radius: 6px
+  background: $paper
+  font-family: $code
+  font-size: 11px
+  text-overflow: ellipsis
+  white-space: nowrap
+  color: $dim
+
+.showcase-preview-screen
+  position: relative
+  height: 250px
+  overflow: hidden
+  background: #f7f7f5
+
+  img
+    display: block
+    width: 100%
+    height: 100%
+    object-fit: cover
+    animation: showcase-preview-in 0.6s $ease-out-expo 1
+
+@keyframes showcase-preview-in
+  0%
+    opacity: 0
+    transform: scale(1.08)
+  100%
+    opacity: 1
+    transform: none
+
+// Stand-in for a cover that isn't there yet: a slow sheen over soft stripes
+.placeholder-shimmer
+  position: absolute
+  inset: 0
+  background-color: #f1f1ef
+  background-image: linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, 0.9) 50%, transparent 70%), repeating-linear-gradient(-45deg, rgba(13, 13, 18, 0.035) 0 10px, transparent 10px 20px)
+  background-size: 250% 100%, auto
+  background-repeat: no-repeat, repeat
+  animation: placeholder-sheen 1.8s linear infinite
+
+// With a 250% wide layer, 117% and -17% park the band just off either edge,
+// so the loop restarts out of sight
+@keyframes placeholder-sheen
+  from
+    background-position: 117% 0, 0 0
+  to
+    background-position: -17% 0, 0 0
+
+.showcase-preview-wip
+  position: absolute
+  left: 50%
+  top: 50%
+  z-index: 2
+  transform: translate(-50%, -50%)
+  padding: 10px 18px 8px
+  border-radius: 999px
+  font-family: $label
+  font-weight: 600
+  font-size: 14px
+  letter-spacing: 0.14em
+  text-transform: uppercase
+  white-space: nowrap
+  color: $paper
+  background: $orange
+  box-shadow: 0 10px 30px rgba(255, 107, 44, 0.35)
+
+.showcase-preview-foot
+  display: flex
+  justify-content: space-between
+  padding: 12px 14px
+  font-family: $label
+  font-weight: 600
+  font-size: 12px
+  letter-spacing: 0.12em
+  text-transform: uppercase
+  color: $ink
+
+  span:last-child
+    color: $blue
+
+    .showcase-preview--wip &
+      color: $orange
+
+@media (prefers-reduced-motion: reduce)
+  .showcase-tape-track,
+  .caret,
+  .entry-title,
+  .entry::after,
+  .placeholder-shimmer,
+  .showcase-preview-screen img
+    animation: none !important
+
+$phone-gutter: 20px
+
+@media (max-width: 760px)
+  .showcase-canvas
+    width: 100%
+    padding-top: 112px
+
+  .showcase-header
+    flex-wrap: wrap
+    gap: 10px 16px
+    padding: 0 $phone-gutter
+
+  .showcase-eyebrow
+    font-size: 13px
+
+  .showcase-stats
+    font-size: 11px
+
+    span
+      margin: 0 6px
+
+  .showcase-intro
+    grid-template-columns: 1fr
+    gap: 16px
+    margin-top: 28px
+    padding: 0 $phone-gutter
+
+  .showcase-intro-title
+    // Must stay on one line: wrapping would make the height jump mid-scramble
+    flex-wrap: nowrap
+    font-size: min(64px, calc((100vw - 2 * #{$phone-gutter}) / 7.6))
+
+    .headline-line--outline
+      -webkit-text-stroke-width: 1.5px
+
+  .showcase-intro-copy
+    padding: 0
+    font-size: 16px
+
+  .showcase-columns
+    display: none
+
+  .showcase-list
+    margin-top: 32px
+    border-top: 1px solid $ink
+
+  .entry
+    grid-template-columns: 44px minmax(0, 1fr)
+    grid-template-rows: auto auto
+    align-items: baseline
+    row-gap: 10px
+    height: auto
+    padding: 20px $phone-gutter
+
+    &.entry--active,
+    .showcase-list--focused &:not(.entry--active)
+      height: auto
+
+  .entry-index
+    grid-row: 1
+    font-size: 12px
+
+  .entry-title
+    grid-column: 2
+    font-size: clamp(26px, 7.6vw, 36px)
+    white-space: normal
+    overflow-wrap: anywhere
+
+  .entry-side
+    grid-column: 2
+    flex-direction: row
+    flex-wrap: wrap
+    align-items: center
+    gap: 8px 16px
+
+  .entry-tags,
+  .entry-status
+    font-size: 11px
+
+  .entry-year::before
+    margin: 0 8px
+
+  .entry-enter
+    display: none
+
+  .showcase-eof
+    flex-direction: column
+    align-items: flex-start
+    gap: 20px
+    padding: 28px $phone-gutter 72px
+
+  .showcase-eof-text
+    font-size: 12px
+
+  .showcase-eof-link-text
+    padding: 14px 22px 12px
+    font-size: 14px
+
+// Touch has no hover: a tap would otherwise dim and blur every other row
+@media (hover: none)
+  .showcase-list--focused .entry:not(.entry--active)
+    opacity: 1
+    filter: none
+
+    &::after
+      opacity: 0
+
+@media (hover: none) and (min-width: 761px)
+  .showcase-list--focused .entry:not(.entry--active)
+    height: $row-height

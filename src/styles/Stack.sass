@@ -1,0 +1,331 @@
+$ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1)
+$spring: cubic-bezier(0.22, 1.3, 0.36, 1)
+$snap: cubic-bezier(0.7, 0, 0.2, 1)
+$label: 'Changa', var(--sans)
+$body: 'ABeeZee', var(--sans)
+$code: ui-monospace, 'Cascadia Mono', Consolas, monospace
+
+$paper: #ffffff
+$ink: #0d0d12
+$blue: #2f5bff
+$dim: rgba(13, 13, 18, 0.46)
+$line: rgba(13, 13, 18, 0.1)
+
+$gutter: clamp(20px, 4.7vw, 90px)
+$tile: clamp(52px, 4.2vw, 76px)
+
+.stack
+  position: relative
+  z-index: 1
+  color: $ink
+  padding: clamp(40px, 5vw, 80px) 0 clamp(80px, 9vw, 160px)
+
+.stack-header
+  display: flex
+  justify-content: space-between
+  align-items: center
+  gap: 10px 16px
+  flex-wrap: wrap
+  padding: 0 $gutter
+
+.stack-eyebrow
+  display: flex
+  align-items: center
+  gap: 12px
+  margin: 0
+  font-family: $label
+  font-weight: 600
+  font-size: clamp(13px, 0.85vw, 16px)
+  line-height: 1
+  letter-spacing: 0.1em
+  text-transform: uppercase
+  color: $blue
+
+.stack-eyebrow-dot
+  width: 9px
+  height: 9px
+  border-radius: 50%
+  background: $blue
+
+.stack-stats
+  margin: 0
+  font-family: $label
+  font-weight: 600
+  font-size: clamp(11px, 0.8vw, 15px)
+  line-height: 1
+  letter-spacing: 0.12em
+  text-transform: uppercase
+
+  span
+    margin: 0 10px
+    color: $dim
+
+.stack-intro
+  display: grid
+  grid-template-columns: 1fr minmax(0, 560px)
+  align-items: end
+  gap: 24px 80px
+  margin-top: clamp(28px, 3.4vw, 64px)
+  padding: 0 $gutter
+
+  @media (max-width: 900px)
+    grid-template-columns: 1fr
+
+.stack-title
+  display: flex
+  gap: 0.28em
+  margin: 0
+  font-family: $label
+  font-weight: 600
+  font-size: clamp(48px, 6.7vw, 128px)
+  line-height: 0.9
+  text-transform: uppercase
+  white-space: nowrap
+
+  .headline-line--outline
+    align-self: auto
+    -webkit-text-stroke-width: max(1.5px, 0.016em)
+
+.stack-intro-copy
+  margin: 0
+  font-family: $body
+  font-size: clamp(16px, 1.15vw, 22px)
+  line-height: 1.5
+  color: rgba(13, 13, 18, 0.66)
+
+// A one-line shell readout of the current focus
+.stack-terminal
+  display: flex
+  flex-wrap: wrap
+  align-items: center
+  gap: 6px 10px
+  width: fit-content
+  margin: 20px 0 0
+  padding: 12px 18px
+  border-radius: 12px
+  background: #0f1117
+  box-shadow: 0 20px 40px -24px rgba(13, 13, 18, 0.6)
+  font-family: $code
+  font-size: clamp(13px, 0.9vw, 16px)
+  color: #e6e6eb
+
+.stack-terminal-prompt
+  color: #82e0d0
+
+.stack-terminal-out
+  display: inline-flex
+  align-items: center
+  color: #7fb4ff
+  white-space: pre
+
+  .caret
+    background: #7fb4ff
+
+.stack-tiers
+  margin: clamp(40px, 4.4vw, 80px) 0 0
+  padding: 0
+  list-style: none
+  border-top: 1px solid $ink
+
+.stack-tier
+  display: grid
+  grid-template-columns: clamp(44px, 6vw, 170px) minmax(200px, 360px) minmax(0, 1fr)
+  align-items: center
+  gap: 24px
+  padding: clamp(28px, 2.6vw, 44px) $gutter
+  border-bottom: 1px solid $line
+  transition: background-color 0.5s $ease-out-expo
+
+  &:hover
+    background-color: rgba(47, 91, 255, 0.025)
+
+  @media (max-width: 900px)
+    grid-template-columns: 44px minmax(0, 1fr)
+
+    .stack-tiles
+      grid-column: 1 / -1
+      justify-content: center
+
+.stack-tier-index
+  align-self: start
+  padding-top: 0.5em
+  font-family: $code
+  font-size: clamp(12px, 0.85vw, 16px)
+  color: $dim
+
+  &::before
+    content: '#'
+    margin-right: 2px
+    opacity: 0.6
+
+.stack-tier-label
+  margin: 0
+  font-family: $label
+  font-weight: 600
+  font-size: clamp(26px, 2.5vw, 48px)
+  line-height: 1
+  letter-spacing: -0.005em
+  text-transform: uppercase
+
+.stack-tier-caption
+  margin: 8px 0 0
+  font-family: $label
+  font-weight: 600
+  font-size: clamp(11px, 0.72vw, 13px)
+  letter-spacing: 0.14em
+  text-transform: uppercase
+  color: $dim
+
+// Five pips that fill in left to right when the row scrolls in
+.stack-meter
+  display: flex
+  gap: 5px
+  margin-top: 16px
+
+  span
+    width: 22px
+    height: 6px
+    border-radius: 3px
+    background: $line
+    position: relative
+    overflow: hidden
+
+    &::after
+      content: ''
+      position: absolute
+      inset: 0
+      border-radius: inherit
+      background: $blue
+      transform: scaleX(0)
+      transform-origin: left center
+      transition: transform 0.5s $snap
+      transition-delay: calc(0.25s + var(--i) * 0.09s)
+
+  .is-in & span.is-on::after
+    transform: none
+
+.stack-tiles
+  display: flex
+  flex-wrap: wrap
+  gap: clamp(12px, 1.1vw, 20px)
+  margin: 0
+  padding: 0
+  list-style: none
+
+.stack-tile
+  position: relative
+  will-change: transform
+
+.stack-tile-body
+  position: relative
+  display: block
+  width: $tile
+  height: $tile
+  border-radius: 22%
+  outline: none
+  box-shadow: 0 1px 2px rgba(13, 13, 18, 0.06), 0 10px 24px -14px rgba(13, 13, 18, 0.35)
+  opacity: 0
+  transition: translate 0.45s $spring, scale 0.45s $spring, rotate 0.45s $spring, box-shadow 0.45s $ease-out-expo, filter 0.4s $ease-out-expo, opacity 0.4s $ease-out-expo
+
+  img
+    display: block
+    width: 100%
+    height: 100%
+    border-radius: inherit
+    user-select: none
+
+  // Fill-mode backwards only: once the pop ends, the hover transitions own
+  // translate and scale again
+  .is-in &
+    opacity: 1
+    animation: stack-pop 0.7s $spring backwards
+    animation-delay: calc(0.1s + var(--i) * 0.055s)
+
+  &:hover,
+  &:focus-visible
+    translate: 0 -8px
+    scale: 1.12
+    rotate: -4deg
+    box-shadow: 0 1px 2px rgba(13, 13, 18, 0.06), 0 22px 36px -16px rgba(47, 91, 255, 0.55)
+
+  &:focus-visible
+    box-shadow: 0 0 0 2px $paper, 0 0 0 4px $blue
+
+  .stack-tile:nth-child(even) &:hover,
+  .stack-tile:nth-child(even) &:focus-visible
+    rotate: 4deg
+
+@keyframes stack-pop
+  from
+    opacity: 0
+    translate: 0 24px
+    scale: 0.6
+    rotate: -12deg
+
+// Not maintained any more, so greyed out until you look closer
+.stack-tier--faded .stack-tile-body
+  filter: grayscale(1)
+
+.stack-tier--faded.is-in .stack-tile-body
+  opacity: 0.55
+
+  &:hover,
+  &:focus-visible
+    filter: none
+    opacity: 1
+
+.stack-tile-badge
+  position: absolute
+  top: -4px
+  right: -4px
+  width: 12px
+  height: 12px
+  border-radius: 50%
+  background: $blue
+  box-shadow: 0 0 0 2.5px $paper
+  animation: stack-badge 2s $ease-out-expo infinite
+
+@keyframes stack-badge
+  0%, 100%
+    box-shadow: 0 0 0 2.5px $paper, 0 0 0 2.5px rgba(47, 91, 255, 0.5)
+  60%
+    box-shadow: 0 0 0 2.5px $paper, 0 0 0 10px rgba(47, 91, 255, 0)
+
+.stack-tile-name
+  position: absolute
+  left: 50%
+  bottom: calc(100% + 14px)
+  z-index: 2
+  padding: 5px 10px 4px
+  border-radius: 999px
+  background: $ink
+  font-family: $code
+  font-size: 12px
+  white-space: nowrap
+  color: $paper
+  pointer-events: none
+  opacity: 0
+  translate: -50% 6px
+  scale: 0.9
+  transition: opacity 0.2s linear, translate 0.35s $spring, scale 0.35s $spring
+
+  &::after
+    content: ''
+    position: absolute
+    top: 100%
+    left: 50%
+    margin-left: -5px
+    border: 5px solid transparent
+    border-top-color: $ink
+
+  .stack-tile:hover &,
+  .stack-tile:focus-within &
+    opacity: 1
+    translate: -50% 0
+    scale: 1
+
+@media (prefers-reduced-motion: reduce)
+  .stack-tile-body,
+  .is-in .stack-tile-body,
+  .stack-tile-badge
+    animation: none

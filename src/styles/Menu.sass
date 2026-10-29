@@ -1,0 +1,417 @@
+$ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1)
+$burger-ease: cubic-bezier(0.2, 0.81, 0.35, 0.98)
+$flood-ease: cubic-bezier(0.48, 0.75, 0.63, 0.14)
+$spring: cubic-bezier(0.22, 1.3, 0.36, 1)
+$tile-ease-out: cubic-bezier(0.5, 1, 0.89, 1)
+$tile-ease-in-out: cubic-bezier(0.45, 0, 0.55, 1)
+
+$label: 'Changa', var(--sans)
+$body: 'ABeeZee', var(--sans)
+
+$paper: #ffffff
+$surface: #f1f1ef
+$ink: #0d0d12
+$dim: rgba(13, 13, 18, 0.46)
+$quiet: rgba(13, 13, 18, 0.32)
+$blue: #2f5bff
+$orange: #ff6b2c
+$line: rgba(13, 13, 18, 0.1)
+$tile-line: rgba(13, 13, 18, 0.1)
+
+$gutter: clamp(20px, 4.7vw, 90px)
+$tile-gap: 16px
+
+// Burger centre: 28px offset + 14px padding + half the 40 x 25 bar stack
+$origin: 62px 50px
+
+.menu-burger
+  position: fixed
+  top: 24px
+  left: 28px
+  z-index: 50
+  display: flex
+  flex-direction: column
+  gap: 5px
+  width: 68px
+  padding: 14px
+  border: 0
+  border-radius: 16px
+  // A dark chip, so the bars read over the hero art and the white pages alike
+  background: rgba(13, 13, 18, 0.88)
+  backdrop-filter: blur(8px)
+  box-shadow: 0 10px 30px rgba(13, 13, 18, 0.25)
+  cursor: pointer
+  animation: menu-burger-in 1s linear both
+  animation-delay: var(--menu-delay, 0ms)
+
+  span
+    position: relative
+    display: block
+    width: 100%
+    height: 5px
+    border-radius: 10px
+    background: #fff
+    transition: width 0.73s $burger-ease, opacity 0.42s cubic-bezier(0.165, 0.84, 0.44, 1), transform 0.83s $burger-ease
+
+  span:nth-child(2)
+    width: 75%
+
+  span:nth-child(3)
+    width: 50%
+
+  // On touch, a tap leaves :hover stuck on
+  @media (hover: hover)
+    &:hover
+      span:nth-child(1)
+        width: 75%
+
+      span:nth-child(2)
+        width: 50%
+
+      span:nth-child(3)
+        width: 100%
+
+  &:focus-visible
+    outline: 2px solid $blue
+    outline-offset: 3px
+
+  .is-open &
+    span:nth-child(1),
+    span:nth-child(3)
+      width: 100%
+
+    span:nth-child(1)
+      transform: translateY(10px) rotate(45deg)
+
+    span:nth-child(2)
+      width: 60%
+      opacity: 0
+
+    span:nth-child(3)
+      transform: translateY(-10px) rotate(315deg)
+
+    @media (hover: hover)
+      &:hover span:nth-child(1)
+        width: 0
+        opacity: 0
+        transform: translateY(10px) rotate(55deg)
+
+@keyframes menu-burger-in
+  from
+    opacity: 0
+
+// 150% of the circle() reference radius covers any corner
+.menu-panel
+  position: fixed
+  inset: 0
+  z-index: 40
+  display: grid
+  grid-template-rows: auto minmax(0, 1fr) auto auto
+  padding: 38px $gutter 28px
+  overflow: hidden
+  color: $ink
+  background-color: $paper
+  background-image: radial-gradient(circle, rgba(13, 13, 18, 0.1) 1.1px, transparent 1.4px)
+  background-size: 26px 26px
+  clip-path: circle(0% at $origin)
+  visibility: hidden
+  transition: clip-path 1s $flood-ease 0.5s, visibility 0s linear 1.5s
+
+  .is-open &
+    clip-path: circle(150% at $origin)
+    visibility: visible
+    transition: clip-path 1s $flood-ease, visibility 0s
+
+.menu-reveal
+  opacity: 0
+  transform: translateY(-50px)
+  transition: opacity 0.35s linear, transform 0.5s $ease-out-expo
+  transition-delay: calc(var(--i, 0) * 50ms)
+
+  .is-open &
+    opacity: 1
+    transform: none
+    transition: opacity 0.5s linear, transform 0.8s $spring
+    transition-delay: calc(780ms + var(--i, 0) * 50ms)
+
+.menu-eyebrow
+  display: flex
+  align-items: center
+  justify-self: end
+  gap: 12px
+  height: 24px
+  margin: 0
+  font-family: $label
+  font-weight: 600
+  font-size: 13px
+  letter-spacing: 0.14em
+  text-transform: uppercase
+  color: $blue
+
+.menu-eyebrow-dot
+  width: 8px
+  height: 8px
+  border-radius: 50%
+  background: $blue
+
+.menu-main
+  display: grid
+  align-items: center
+  min-height: 0
+
+// max-width keeps the row short enough to fit the viewport height
+.menu-tiles
+  display: grid
+  grid-template-columns: repeat(4, minmax(0, 1fr))
+  gap: $tile-gap
+  width: 100%
+  max-width: calc(4 * max(100svh - 300px, 140px) + 3 * #{$tile-gap})
+  margin: 0 auto
+  padding: 0
+  list-style: none
+
+  @media (max-width: 900px)
+    grid-template-columns: repeat(2, minmax(0, 1fr))
+    max-width: calc(2 * max((100svh - 300px) / 2, 120px) + #{$tile-gap})
+
+  @media (max-width: 600px)
+    gap: 10px
+
+.menu-tile
+  position: relative
+  display: block
+  aspect-ratio: 1
+  overflow: hidden
+  isolation: isolate
+  color: $ink
+  text-decoration: none
+  background: $paper
+  border: 1px solid $tile-line
+  border-radius: 18px
+  box-shadow: 0 1px 2px rgba(13, 13, 18, 0.04), 0 18px 40px -24px rgba(13, 13, 18, 0.25)
+  transition: border-color 200ms $tile-ease-out
+  user-select: none
+  transform: translate(calc(var(--tile-x, 0) * 6px), calc(var(--tile-y, 0) * 6px)) scale(var(--tile-scale, 1))
+  container-type: inline-size
+
+  &::before
+    content: ''
+    position: absolute
+    inset: 0
+    z-index: 1
+    background: radial-gradient(circle at bottom left, transparent 55%, $surface)
+    box-shadow: inset -0.5cqi 0.5cqi 2.5cqi $paper
+    pointer-events: none
+    transition: opacity 900ms $tile-ease-out
+
+  &::after
+    content: ''
+    position: absolute
+    inset: 0
+    z-index: 1
+    margin: auto
+    aspect-ratio: 1
+    background: radial-gradient(circle, $paper, transparent 65%)
+    opacity: 0
+    pointer-events: none
+    transition: opacity 800ms $tile-ease-out
+
+  &:focus-visible
+    outline: 2px solid var(--accent)
+    outline-offset: 4px
+
+  &.is-hovered
+    border-color: var(--accent)
+    transition: border-color 800ms $tile-ease-in-out
+
+    &::before
+      opacity: 0
+
+    &::after
+      opacity: 1
+
+    .menu-tile-icon
+      color: var(--accent)
+      scale: 1.1
+      transition: color 300ms $tile-ease-in-out, scale 300ms $tile-ease-in-out
+
+    .menu-tile-index
+      color: var(--accent)
+
+    .menu-tile-label
+      color: $ink
+
+.pixel-canvas
+  position: absolute
+  inset: 0
+  z-index: 0
+  display: block
+  width: 100%
+  height: 100%
+
+.menu-tile-icon
+  position: absolute
+  inset: 0
+  z-index: 2
+  width: 26%
+  height: auto
+  margin: auto
+  fill: none
+  stroke: currentColor
+  stroke-width: 1.25
+  stroke-linecap: square
+  stroke-linejoin: miter
+  color: $quiet
+  translate: calc(var(--tile-x, 0) * 22px) calc(var(--tile-y, 0) * 22px)
+  transition: color 300ms $tile-ease-out, scale 300ms $tile-ease-out
+
+.menu-tile-index
+  position: absolute
+  top: 16px
+  left: 18px
+  z-index: 2
+  display: inline-flex
+  align-items: center
+  gap: 9px
+  font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace
+  font-size: 13px
+  color: $dim
+  transition: color 300ms $tile-ease-out
+
+  .is-current &
+    color: $blue
+
+    &::before
+      content: ''
+      width: 7px
+      height: 7px
+      border-radius: 50%
+      background: currentColor
+
+.menu-tile-text
+  position: absolute
+  right: 18px
+  bottom: 16px
+  left: 18px
+  z-index: 2
+  display: flex
+  flex-direction: column
+  gap: 6px
+
+.menu-tile-label
+  font-family: $label
+  font-weight: 600
+  font-size: clamp(18px, 1.9vw, 32px)
+  line-height: 1
+  letter-spacing: 0.01em
+  text-transform: uppercase
+  transition: color 300ms $tile-ease-out
+
+.menu-tile-meta
+  font-family: $label
+  font-weight: 600
+  font-size: 12px
+  letter-spacing: 0.14em
+  text-transform: uppercase
+  color: $dim
+
+@media (max-width: 600px)
+  .menu-tile-index
+    top: 12px
+    left: 12px
+    font-size: 11px
+
+  .menu-tile-text
+    right: 12px
+    bottom: 12px
+    left: 12px
+
+  .menu-tile-meta
+    display: none
+
+.menu-info
+  display: flex
+  align-items: flex-end
+  justify-content: space-between
+  gap: 24px 48px
+  padding: 28px 0 24px
+
+  @media (max-width: 900px)
+    flex-direction: column
+    align-items: flex-start
+
+.menu-blurb
+  max-width: 420px
+  margin: 0
+  font-family: $body
+  font-size: 16px
+  line-height: 1.55
+  color: $dim
+
+  @media (max-width: 900px)
+    display: none
+
+.menu-socials
+  display: flex
+  flex-wrap: wrap
+  gap: 10px 28px
+  margin: 0
+  padding: 0
+  list-style: none
+
+  a
+    display: inline-flex
+    gap: 6px
+    font-family: $label
+    font-weight: 600
+    font-size: 14px
+    letter-spacing: 0.12em
+    text-transform: uppercase
+    color: $ink
+    text-decoration: none
+    transition: color 0.2s linear
+
+    span
+      color: $blue
+      transition: transform 0.4s $ease-out-expo
+
+    &:hover,
+    &:focus-visible
+      color: $blue
+      outline: none
+
+      span
+        transform: translate(3px, -3px)
+
+.menu-footer
+  display: flex
+  justify-content: space-between
+  gap: 16px
+  margin: 0
+  padding-top: 18px
+  border-top: 1px solid $line
+  font-family: $label
+  font-weight: 600
+  font-size: 12px
+  letter-spacing: 0.14em
+  text-transform: uppercase
+  color: $dim
+
+@media (prefers-reduced-motion: reduce)
+  .menu-panel,
+  .is-open .menu-panel
+    clip-path: none
+    transition: opacity 0.3s linear, visibility 0s linear 0.3s
+
+  .menu-panel
+    opacity: 0
+
+  .is-open .menu-panel
+    opacity: 1
+    transition: opacity 0.3s linear, visibility 0s
+
+  .menu-reveal,
+  .is-open .menu-reveal
+    transform: none
+    transition: opacity 0.3s linear
+    transition-delay: 0s

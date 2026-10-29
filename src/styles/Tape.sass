@@ -1,0 +1,346 @@
+$tilt-easing: cubic-bezier(0.16, 0.69, 0.26, 0.88)
+$settle-easing: cubic-bezier(0.33, 0.65, 0.39, 0.94)
+
+@keyframes tape-drop-in
+  0%
+    top: -50vh
+    opacity: 0
+    filter: blur(25px)
+    transform: scale(0.5, 2) translateY(0)
+
+  30%
+    transform: scale(0.9, 1.1)
+    top: calc(50vh - 120px)
+    opacity: 0.5
+
+  50%
+    top: calc(50vh - 160px)
+
+  100%
+    transform: scale(1, 1) translateY(0)
+    top: calc(50vh - 150px)
+    opacity: 1
+    filter: blur(0px)
+
+.tape-scale
+  transform: scale(1)
+
+  @media screen and (max-width: 630px)
+    transform: scale(0.6) translateY(20vh)
+
+.tape-tilt
+  will-change: transform
+
+.tape-drop
+  position: absolute
+  align-items: center
+  height: 300px
+  width: 696px
+  left: calc(50vw - 0.5 * 725px)
+  top: -50vh
+  opacity: 0
+
+  &.tape-drop--entered
+    animation: tape-drop-in 1.5s ease 1s forwards
+
+.tape-svg
+  position: absolute
+  align-items: center
+  height: 300px
+  width: 725px
+  left: 0
+  top: 0
+  stroke: black
+  opacity: 1
+
+// Text is positioned at exact px offsets, so the tape pins its own margin
+// and line-height instead of inheriting them
+.tape-title,
+.tape-name,
+.tape-whoisthat,
+.tape-description,
+.tape-age,
+.tape-hashtag-text
+  margin: 0
+  line-height: 1
+
+.tape-title
+  font-family: 'Gochi Hand', cursive
+  color: black
+  position: absolute
+  font-size: 100px
+  left: 105px
+  top: 25px
+
+.tape-name
+  font-family: 'Changa One', cursive
+  color: black
+  position: absolute
+  font-size: 30px
+  left: 105px
+  top: 126px
+  line-height: 80%
+
+.tape-whoisthat
+  font-family: 'Changa', cursive
+  color: #5a5a5a
+  position: absolute
+  font-size: 20px
+  left: 315px
+  top: 126px
+
+.tape-description
+  font-family: 'Changa One', cursive
+  color: black
+  position: absolute
+  font-size: 17px
+  line-height: 80%
+  left: 315px
+  top: 147.5px
+  max-width: 275px
+  text-align: left
+
+.tape-age
+  font-family: 'Changa One', cursive
+  color: black
+  font-size: 30px
+  position: absolute
+  left: 476px
+  max-width: 150px
+  top: 198px
+  line-height: 80%
+
+.tape-colorwheel
+  position: absolute
+  left: 105px
+  top: 205px
+  width: 333px
+  height: 12.5px
+
+.tape-colorwheel-segment
+  position: relative
+  width: 10%
+  top: 0
+  height: 12.5px
+  float: left
+  cursor: pointer
+  transition: top 0.75s $tilt-easing, height 0.75s $tilt-easing
+
+  &:hover
+    height: 25px
+    top: -6.25px
+
+.tape-colorspot
+  width: 128px
+  height: 53.5px
+  position: absolute
+  top: 242px
+  left: 353px
+  transition: background-color 0.75s $settle-easing
+
+.tape-hashtag
+  width: 217.5px
+  left: 105px
+  top: 252px
+  height: 35px
+  background-color: black
+  position: absolute
+
+.tape-hashtag-text
+  font-family: 'Changa One', cursive
+  color: white
+  font-size: 12px
+  position: relative
+  text-align: center
+  width: 100%
+  top: calc(50% - 13px * 0.5)
+
+.tape-link-icon
+  position: absolute
+  transform: scale(0.8)
+  opacity: 1
+  cursor: pointer
+  transition: opacity 0.3s ease-in-out
+
+  &:hover
+    opacity: 0.5
+
+  &--github
+    width: 48px
+    height: 48px
+    left: 550px
+    top: 248px
+
+  &--linkedin
+    left: 495px
+    top: 246px
+
+.tape-glitch
+  position: relative
+  color: #fff
+  animation: tape-glitch-skew 10s infinite linear alternate-reverse
+
+  &::before,
+  &::after
+    content: attr(data-text)
+    position: absolute
+    top: 0
+    width: 100%
+    height: 100%
+    clip: rect(44px, 450px, 56px, 0)
+
+  &::before
+    left: 2px
+    text-shadow: -2px 0 #ff00c1
+    animation: tape-glitch-anim 5s infinite linear alternate-reverse
+
+  &::after
+    left: -2px
+    text-shadow: -2px 0 #ff00c1, 2px 2px #ff00c1
+    animation: tape-glitch-anim-alt 5s infinite linear alternate-reverse
+
+@keyframes tape-glitch-anim
+  0%
+    clip: rect(25px, 9999px, 98px, 0)
+    transform: skew(0.12deg)
+  5%
+    clip: rect(81px, 9999px, 77px, 0)
+    transform: skew(0.23deg)
+  10%
+    clip: rect(29px, 9999px, 16px, 0)
+    transform: skew(0.31deg)
+  15%
+    clip: rect(20px, 9999px, 12px, 0)
+    transform: skew(0.26deg)
+  20%
+    clip: rect(21px, 9999px, 14px, 0)
+    transform: skew(0.73deg)
+  25%
+    clip: rect(8px, 9999px, 54px, 0)
+    transform: skew(0.15deg)
+  30%
+    clip: rect(17px, 9999px, 65px, 0)
+    transform: skew(0.59deg)
+  35%
+    clip: rect(31px, 9999px, 51px, 0)
+    transform: skew(0.41deg)
+  40%
+    clip: rect(5px, 9999px, 82px, 0)
+    transform: skew(0.41deg)
+  45%
+    clip: rect(33px, 9999px, 12px, 0)
+    transform: skew(0.68deg)
+  50%
+    clip: rect(82px, 9999px, 56px, 0)
+    transform: skew(0.78deg)
+  55%
+    clip: rect(98px, 9999px, 41px, 0)
+    transform: skew(0.07deg)
+  60%
+    clip: rect(40px, 9999px, 35px, 0)
+    transform: skew(0.78deg)
+  65%
+    clip: rect(14px, 9999px, 37px, 0)
+    transform: skew(0.52deg)
+  70%
+    clip: rect(73px, 9999px, 51px, 0)
+    transform: skew(0.98deg)
+  75%
+    clip: rect(4px, 9999px, 38px, 0)
+    transform: skew(0.97deg)
+  80%
+    clip: rect(70px, 9999px, 60px, 0)
+    transform: skew(0.69deg)
+  85%
+    clip: rect(56px, 9999px, 57px, 0)
+    transform: skew(0.17deg)
+  90%
+    clip: rect(7px, 9999px, 88px, 0)
+    transform: skew(0.27deg)
+  95%
+    clip: rect(4px, 9999px, 28px, 0)
+    transform: skew(0.86deg)
+
+@keyframes tape-glitch-anim-alt
+  0%
+    clip: rect(92px, 9999px, 38px, 0)
+    transform: skew(0.4deg)
+  5%
+    clip: rect(95px, 9999px, 78px, 0)
+    transform: skew(0.62deg)
+  10%
+    clip: rect(76px, 9999px, 96px, 0)
+    transform: skew(0.99deg)
+  15%
+    clip: rect(37px, 9999px, 100px, 0)
+    transform: skew(0.69deg)
+  20%
+    clip: rect(23px, 9999px, 82px, 0)
+    transform: skew(0.37deg)
+  25%
+    clip: rect(66px, 9999px, 96px, 0)
+    transform: skew(0.17deg)
+  30%
+    clip: rect(51px, 9999px, 47px, 0)
+    transform: skew(0.49deg)
+  35%
+    clip: rect(64px, 9999px, 76px, 0)
+    transform: skew(0.2deg)
+  40%
+    clip: rect(54px, 9999px, 7px, 0)
+    transform: skew(0.72deg)
+  45%
+    clip: rect(77px, 9999px, 81px, 0)
+    transform: skew(0.47deg)
+  50%
+    clip: rect(12px, 9999px, 9px, 0)
+    transform: skew(0.64deg)
+  55%
+    clip: rect(61px, 9999px, 91px, 0)
+    transform: skew(0.7deg)
+  60%
+    clip: rect(61px, 9999px, 65px, 0)
+    transform: skew(0.9deg)
+  65%
+    clip: rect(75px, 9999px, 35px, 0)
+    transform: skew(0.44deg)
+  70%
+    clip: rect(62px, 9999px, 48px, 0)
+    transform: skew(0.08deg)
+  75%
+    clip: rect(96px, 9999px, 60px, 0)
+    transform: skew(0.27deg)
+  80%
+    clip: rect(13px, 9999px, 91px, 0)
+    transform: skew(0.97deg)
+  85%
+    clip: rect(16px, 9999px, 84px, 0)
+    transform: skew(0.01deg)
+  90%
+    clip: rect(67px, 9999px, 35px, 0)
+    transform: skew(0.03deg)
+  95%
+    clip: rect(42px, 9999px, 48px, 0)
+    transform: skew(0.83deg)
+
+@keyframes tape-glitch-skew
+  0%
+    transform: skew(4deg)
+  10%
+    transform: skew(-3deg)
+  20%
+    transform: skew(2deg)
+  30%
+    transform: skew(0deg)
+  40%
+    transform: skew(-3deg)
+  50%
+    transform: skew(3deg)
+  60%
+    transform: skew(3deg)
+  70%
+    transform: skew(1deg)
+  80%
+    transform: skew(-1deg)
+  90%
+    transform: skew(4deg)

@@ -1,0 +1,47 @@
+.hero {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100vh;
+  /* Phones: the visible height, not the one behind the browser's toolbars */
+  height: 100svh;
+  overflow: hidden;
+  transform-origin: center center;
+  will-change: transform, border-radius;
+}
+
+/* On an overlay: the hero art sits on a negative layer that would paint
+   over a box-shadow on .hero itself */
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(13, 13, 18, 0.1);
+  opacity: var(--hero-progress, 0);
+  pointer-events: none;
+}
+
+::view-transition-old(root) {
+  animation: page-out 0.35s cubic-bezier(0.4, 0, 1, 1) both;
+}
+
+::view-transition-new(root) {
+  animation: page-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes page-out {
+  to {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+}
+
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}
