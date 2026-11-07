@@ -9,7 +9,7 @@ const kProjects = [
     slug: 'fww',
     year: '2025',
     title: 'FWW',
-    meta: 'Web · 2025',
+    meta: 'Web · React · Firebase · 2025',
     color: '#E38157',
     image: kFwwImage,
     url: 'https://www.fransewerkwoorden.nl',
