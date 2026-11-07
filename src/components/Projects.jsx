@@ -114,6 +114,12 @@ function Preview({ project }) {
   }, [])
 
   const locked = project && !IsProjectOpen(project)
+  const url = project?.url
+    ? project.url.replace(/^https?:\/\/(www\.)?/, '')
+    : `/work/${project?.slug ?? ''}`
+  let foot = 'Click to open →'
+  if (project?.url) foot = 'Visit site ↗'
+  if (locked) foot = 'Coming soon'
   const preview_class =
     'showcase-preview' +
     (project ? ' is-visible' : '') +
@@ -127,9 +133,7 @@ function Preview({ project }) {
           <span />
           <span />
         </span>
-        <span className="showcase-preview-url">
-          /work/{project?.slug ?? ''}
-        </span>
+        <span className="showcase-preview-url">{url}</span>
       </div>
       <div className="showcase-preview-screen">
         {project?.image && !locked ? (
@@ -143,7 +147,7 @@ function Preview({ project }) {
       </div>
       <div className="showcase-preview-foot">
         <span>{project?.title ?? ''}</span>
-        <span>{locked ? 'Coming soon' : 'Click to open →'}</span>
+        <span>{foot}</span>
       </div>
     </div>
   )

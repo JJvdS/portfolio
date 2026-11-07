@@ -1,6 +1,8 @@
-// Every project is disabled for now: its row shows as in progress and no case
-// study route opens for it. `featured` projects appear on the landing, in this
-// order
+import kFwwImage from '../assets/fww.png'
+
+// A disabled project shows as in progress and has no route. One with a `url`
+// links out to its live site instead of a case study. `featured` projects
+// appear on the landing, in this order
 const kProjects = [
   {
     index: '01',
@@ -9,8 +11,9 @@ const kProjects = [
     title: 'FWW',
     meta: 'Web · 2025',
     color: '#E38157',
+    image: kFwwImage,
+    url: 'https://www.fransewerkwoorden.nl',
     featured: true,
-    disabled: true,
   },
   {
     index: '02',

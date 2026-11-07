@@ -4,24 +4,39 @@ import { IsProjectOpen } from '../data/caseStudies'
 import { useScramble } from './Scramble'
 
 ////////////////////////////////////////////////////////////////////////////////
+// Props for an open row: external projects open their live site in a new
+// tab, the rest route to their case study
+function LinkProps(project) {
+  if (project.url) {
+    return {
+      href: project.url,
+      target: '_blank',
+      rel: 'noopener noreferrer',
+      'aria-label': `${project.title} live site (opens in a new tab)`,
+    }
+  }
+
+  const href = WorkPath(project.slug)
+  return {
+    href,
+    onClick: (event) =>
+      HandleLinkClick(event, href, {
+        effect: 'glitch',
+        label: `opening ${project.index} // ${project.title}`,
+        name: project.title,
+      }),
+    'aria-label': `${project.title} case study`,
+  }
+} //LinkProps
+
+////////////////////////////////////////////////////////////////////////////////
 // A project that isn't open renders as a focusable, non-link row marked as
 // work in progress
 function ProjectRow({ project, active, hover_tick, on_hover, on_leave }) {
   const wip = !IsProjectOpen(project)
-  const href = wip ? null : WorkPath(project.slug)
+  const external = !wip && Boolean(project.url)
   const Tag = wip ? 'div' : 'a'
-  const link_props = wip
-    ? {}
-    : {
-        href,
-        onClick: (event) =>
-          HandleLinkClick(event, href, {
-            effect: 'glitch',
-            label: `opening ${project.index} // ${project.title}`,
-            name: project.title,
-          }),
-        'aria-label': `${project.title} case study`,
-      }
+  const link_props = wip ? {} : LinkProps(project)
 
   const title = useScramble(
     project.title.toUpperCase(),
@@ -34,7 +49,12 @@ function ProjectRow({ project, active, hover_tick, on_hover, on_leave }) {
     (wip ? ' entry--wip' : ' entry--open')
 
   let status = active ? 'Read the story' : 'Case study'
+  if (external) status = active ? 'Visit the site' : 'Live site'
   if (wip) status = active ? 'In progress' : 'Coming soon'
+
+  let enter = 'View project →'
+  if (external) enter = 'Visit site ↗'
+  if (wip) enter = 'WIP'
 
   return (
     <Tag
@@ -71,7 +91,7 @@ function ProjectRow({ project, active, hover_tick, on_hover, on_leave }) {
       </span>
 
       <span className="entry-enter" aria-hidden="true">
-        {wip ? 'WIP' : 'View project →'}
+        {enter}
       </span>
     </Tag>
   )

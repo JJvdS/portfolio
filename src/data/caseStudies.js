@@ -475,17 +475,19 @@ build:
 const kCaseStudies = { [kTicTacToe.slug]: kTicTacToe }
 
 ////////////////////////////////////////////////////////////////////////////////
-// A project opens only when it is enabled and has a case study written
+// A project opens only when it is enabled and either links out to its live
+// site or has a case study written
 export function IsProjectOpen(project) {
-  return !project.disabled && Boolean(kCaseStudies[project.slug])
+  if (project.disabled) return false
+  return Boolean(project.url || kCaseStudies[project.slug])
 } //IsProjectOpen
 
 ////////////////////////////////////////////////////////////////////////////////
-// Disabled projects have no route. Enabled ones without a written case study
+// Disabled and external projects have no route. Enabled ones without a written case study
 // get a placeholder page built from their project entry
 export function GetCaseStudy(slug) {
   const project = kProjects.find((p) => p.slug === slug)
-  if (!project || project.disabled) return null
+  if (!project || project.disabled || project.url) return null
   if (kCaseStudies[slug]) return kCaseStudies[slug]
 
   const tags = project.meta.split(' · ').filter((tag) => tag !== project.year)
